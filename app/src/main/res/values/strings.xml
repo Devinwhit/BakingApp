@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Baking App</string>
+    <string name="recipe_title_text">Recipe Title</string>
+    <string name="card_image_content_description">Image for the recipe</string>
+    <string name="recipe_ingredients_text">Ingredients</string>
+    <string name="recipe_description_text">Step Description</string>
+    <string name="recipe_step_instruction">This is the description of the step</string>
+    <string name="previous_step">Previous step</string>
+    <string name="next_step">Next Step</string>
 </resources>
