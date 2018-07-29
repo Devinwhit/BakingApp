@@ -51,6 +51,22 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                         .replace(R.id.recipe_detail, videoFragment)
                         .commit();
 
+            } else {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(STEPS, mStep);
+                RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+                recipeDetailFragment.setArguments(bundle);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.recipe_detail, recipeDetailFragment)
+                        .commit();
+                VideoFragment videoFragment = new VideoFragment();
+                Bundle videoBundle = new Bundle();
+                videoBundle.putString(VIDEO_URL, mStep.getVideoURL());
+                videoFragment.setArguments(videoBundle);
+                fragmentManager.beginTransaction()
+                        .replace(R.id.detail_video_frame, videoFragment)
+                        .commit();
+
             }
 
         } else {

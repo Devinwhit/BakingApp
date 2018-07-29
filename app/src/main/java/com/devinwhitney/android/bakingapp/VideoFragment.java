@@ -48,7 +48,12 @@ public class VideoFragment extends Fragment {
             videoURL = savedInstanceState.getString(VIDEO_URL);
             videoURL = getArguments().getString(VIDEO_URL);
         } else {
-            videoURL = getArguments().getString(VIDEO_URL);
+            if (getArguments() != null) {
+                videoURL = getArguments().getString(VIDEO_URL);
+            } else {
+                videoURL = "";
+            }
+
         }
         View view = inflater.inflate(R.layout.just_video, container, false);
         mPlayerView = view.findViewById(R.id.playerView);
@@ -102,17 +107,18 @@ public class VideoFragment extends Fragment {
         }
     }
 
-    /**
-     * Release ExoPlayer.
-     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
     private void releasePlayer() {
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
     }
-    /**
-     * Release the player when the activity is destroyed.
-     */
+
     @Override
     public void onDestroy() {
         super.onDestroy();

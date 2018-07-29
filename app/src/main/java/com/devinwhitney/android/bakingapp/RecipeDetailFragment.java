@@ -41,6 +41,9 @@ public class RecipeDetailFragment extends Fragment {
     private Steps mStep;
     private TextView mStepDescription;
 
+    private String fragment;
+    private static final String RecipeActivityClassName = "RecipeDetailActivity";
+
     private Button mNextButton;
     private Button mPreviousButton;
 
@@ -55,7 +58,11 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallback = (OnStepClickListener) context;
+        fragment = getActivity().getLocalClassName();
+        if (fragment.equals(RecipeActivityClassName)) {
+            mCallback = (OnStepClickListener) context;
+        }
+
     }
 
     @Nullable
@@ -64,28 +71,37 @@ public class RecipeDetailFragment extends Fragment {
         if (savedInstanceState != null) {
             mStep = savedInstanceState.getParcelable(STEPS);
         } else {
-            mStep = getArguments().getParcelable(STEPS);
+            if (getArguments() != null){
+                mStep = getArguments().getParcelable(STEPS);
+            } else {
+                mStep = new Steps();
+            }
+
         }
+
         View view = inflater.inflate(R.layout.recipe_detail_fragment, container, false);
         mStepDescription = view.findViewById(R.id.recipe_step_instruction);
         mStepDescription.setText(mStep.getDescription());
         mNextButton = view.findViewById(R.id.next_step_button);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("NEXT!!!");
-                mCallback.onButtonSelection("next", Integer.parseInt(mStep.getId()));
-            }
-        });
         mPreviousButton = view.findViewById(R.id.previous_step_button);
-        mPreviousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("PREVIOUS!!");
-                mCallback.onButtonSelection("previous", Integer.parseInt(mStep.getId()));
-            }
-        });
+        if (fragment.equals(RecipeActivityClassName)){
+            mNextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mCallback.onButtonSelection("next", Integer.parseInt(mStep.getId()));
+                }
+            });
 
+            mPreviousButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mCallback.onButtonSelection("previous", Integer.parseInt(mStep.getId()));
+                }
+            });
+        } else {
+            mNextButton.setVisibility(View.INVISIBLE);
+            mPreviousButton.setVisibility(View.INVISIBLE);
+        }
         return view;
     }
 
