@@ -30,12 +30,15 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepAdapt
     public static String STEPS = "steps_extra";
     public static String INGREDIENTS = "ingredients_extra";
     public static String STEP_NUM = "step_number";
+    public static String ALL_STEPS = "all_steps";
+    private static String TWO_PANE = "two_pane";
 
     private Recipe mRecipe;
     private List<Steps> mSteps;
     private Steps mStep;
     private int mStepPosition;
     private boolean mTwoPane;
+    private List<Ingredients> ingredients;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,55 +46,66 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepAdapt
         setContentView(R.layout.recipe_steps);
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(RECIPE);
+            mSteps = savedInstanceState.getParcelableArrayList(ALL_STEPS);
+            ingredients = savedInstanceState.getParcelable(INGREDIENTS);
+            mTwoPane = savedInstanceState.getBoolean(TWO_PANE);
         } else {
             Intent intent = getIntent();
             mRecipe = intent.getParcelableExtra("data");
+            mSteps = mRecipe.getSteps();
+            ingredients = mRecipe.getIngredients();
+            if (findViewById(R.id.detail_wide_screen) != null) {
+                mTwoPane = true;
+
+                Bundle allStepsBundle = new Bundle();
+                allStepsBundle.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>) mSteps);
+                allStepsBundle.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+
+                MasterRecipeFragment masterRecipeFragment = new MasterRecipeFragment();
+                masterRecipeFragment.setArguments(allStepsBundle);
+
+                RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+                Bundle recipeBundle = new Bundle();
+                recipeBundle.putParcelable(STEPS, mSteps.get(0));
+                recipeDetailFragment.setArguments(recipeBundle);
+
+                Bundle videoBundle = new Bundle();
+                videoBundle.putString(VIDEO_URL, mSteps.get(0).getVideoURL());
+                VideoFragment videoFragment = new VideoFragment();
+                videoFragment.setArguments(videoBundle);
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.recipe_steps, masterRecipeFragment)
+                        .commit();
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.detail_video_frame, videoFragment)
+                        .commit();
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.detail_wide_screen, recipeDetailFragment)
+                        .commit();
+
+
+            } else{
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>)mSteps);
+                bundle.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
+                MasterRecipeFragment masterRecipeFragment = new MasterRecipeFragment();
+                masterRecipeFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.recipe_steps, masterRecipeFragment)
+                        .commit();
+            }
+
         }
-        mSteps = mRecipe.getSteps();
-        List<Ingredients> ingredients = mRecipe.getIngredients();
 
-        if (findViewById(R.id.detail_wide_screen) != null) {
-            mTwoPane = true;
 
-            Bundle allStepsBundle = new Bundle();
-            allStepsBundle.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>) mSteps);
-            allStepsBundle.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
-            MasterRecipeFragment masterRecipeFragment = new MasterRecipeFragment();
-            masterRecipeFragment.setArguments(allStepsBundle);
-
-            RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
-
-            Bundle videoBundle = new Bundle();
-            videoBundle.putString(VIDEO_URL, mSteps.get(0).getVideoURL());
-            VideoFragment videoFragment = new VideoFragment();
-            videoFragment.setArguments(videoBundle);
-
-            fragmentManager.beginTransaction()
-                    .add(R.id.recipe_steps, masterRecipeFragment)
-                    .commit();
-
-            fragmentManager.beginTransaction()
-                    .add(R.id.detail_wide_screen, recipeDetailFragment)
-                    .commit();
-
-            fragmentManager.beginTransaction()
-                    .add(R.id.detail_video_frame, videoFragment)
-                    .commit();
-        } else{
-
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>)mSteps);
-            bundle.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
-            MasterRecipeFragment masterRecipeFragment = new MasterRecipeFragment();
-            masterRecipeFragment.setArguments(bundle);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .add(R.id.recipe_steps, masterRecipeFragment)
-                    .commit();
-        }
 
 
     }
@@ -121,6 +135,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepAdapt
             intent.putParcelableArrayListExtra(STEPS, (ArrayList<? extends Parcelable>) steps);
             intent.putExtra(STEP_NUM, position);
             startActivity(intent);
+
         }
 
     }
@@ -134,5 +149,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepAdapt
         outState.putParcelableArrayList(ALL_STEPS, (ArrayList<? extends Parcelable>) mSteps);
         outState.putInt(STEP_NUM, mStepPosition);
         outState.putParcelable(RECIPE, mRecipe);
+        outState.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
+        outState.putBoolean(TWO_PANE, mTwoPane);
     }
 }

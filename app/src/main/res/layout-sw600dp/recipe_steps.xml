@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
 
     <!-- holds the recipe steps fragment -->
     <FrameLayout
@@ -17,9 +18,24 @@
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/detail_wide_screen"/>
+        android:orientation="vertical">
+        <!-- holds the recipe video  -->
+        <FrameLayout
+            android:id="@+id/detail_video_frame"
+            android:layout_width="match_parent"
+            android:layout_height="371dp"
+            android:layout_gravity="top"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:id="@+id/detail_wide_screen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,15 +1,19 @@
 package com.devinwhitney.android.bakingapp;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -29,11 +33,14 @@ import com.google.android.exoplayer2.util.Util;
 
 public class VideoFragment extends Fragment {
 
+    private static final String POSITION = "position_state";
     private static String TAG = VideoFragment.class.getName();
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
+
+    private Long mPosition;
 
     private static final String VIDEO_URL = "video";
     private String videoURL;
@@ -44,9 +51,10 @@ public class VideoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mPosition = Long.valueOf(0);
         if (savedInstanceState != null) {
             videoURL = savedInstanceState.getString(VIDEO_URL);
-            videoURL = getArguments().getString(VIDEO_URL);
+            mPosition = savedInstanceState.getLong(POSITION, C.TIME_UNSET);
         } else {
             if (getArguments() != null) {
                 videoURL = getArguments().getString(VIDEO_URL);
@@ -94,6 +102,7 @@ public class VideoFragment extends Fragment {
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
+            mExoPlayer.seekTo(mPosition);
 
             // Set the ExoPlayer.EventListener to this activity.
             //mExoPlayer.addListener(this);
@@ -102,14 +111,19 @@ public class VideoFragment extends Fragment {
             String userAgent = Util.getUserAgent(getContext(), "BakingApp");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
+
             mExoPlayer.prepare(mediaSource);
             mExoPlayer.setPlayWhenReady(true);
+
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        long position = mExoPlayer.getCurrentPosition();
+        outState.putLong(POSITION, position);
+        outState.putString(VIDEO_URL, videoURL);
 
     }
 
@@ -125,6 +139,21 @@ public class VideoFragment extends Fragment {
         releasePlayer();
         mMediaSession.setActive(false);
     }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mPlayerView.getLayoutParams();
+            layoutParams.width = layoutParams.MATCH_PARENT;
+            layoutParams.height = layoutParams.MATCH_PARENT;
+
+            mPlayerView.setLayoutParams(layoutParams);
+        }
+
+    }
+
 
     private class MySessionCallback extends MediaSessionCompat.Callback {
         @Override

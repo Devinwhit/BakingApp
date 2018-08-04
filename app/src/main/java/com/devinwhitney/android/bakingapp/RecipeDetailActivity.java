@@ -21,6 +21,8 @@ import java.util.List;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
 
+    private static final String RECIPE_FRAGMENT = "recipe_fragment";
+    private static final String VIDEO_FRAGMENT = "video_fragment";
     public static String STEPS = "steps_extra";
     public static String STEP_NUM = "step_number";
     public static String VIDEO_URL = "video";
@@ -43,30 +45,10 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             mStepPosition = savedInstanceState.getInt(STEP_NUM);
             int currentOrientation = getResources().getConfiguration().orientation;
             if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                VideoFragment videoFragment = new VideoFragment();
-                Bundle videoBundle = new Bundle();
-                videoBundle.putString(VIDEO_URL, mStep.getVideoURL());
-                videoFragment.setArguments(videoBundle);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.recipe_detail, videoFragment)
-                        .commit();
-
-            } else {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(STEPS, mStep);
-                RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
-                recipeDetailFragment.setArguments(bundle);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.recipe_detail, recipeDetailFragment)
-                        .commit();
-                VideoFragment videoFragment = new VideoFragment();
-                Bundle videoBundle = new Bundle();
-                videoBundle.putString(VIDEO_URL, mStep.getVideoURL());
-                videoFragment.setArguments(videoBundle);
-                fragmentManager.beginTransaction()
-                        .replace(R.id.detail_video_frame, videoFragment)
-                        .commit();
-
+                VideoFragment videoFragment = (VideoFragment) fragmentManager.findFragmentByTag(VIDEO_FRAGMENT);
+                System.out.println("video frag");
+                RecipeDetailFragment recipeDetailFragment = (RecipeDetailFragment) fragmentManager.findFragmentByTag(RECIPE_FRAGMENT);
+                VideoFragment newVideoFragment = new VideoFragment();
             }
 
         } else {
@@ -79,7 +61,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
             recipeDetailFragment.setArguments(bundle);
             fragmentManager.beginTransaction()
-                    .add(R.id.recipe_detail, recipeDetailFragment)
+                    .add(R.id.recipe_detail, recipeDetailFragment, RECIPE_FRAGMENT)
                     .commit();
 
             VideoFragment videoFragment = new VideoFragment();
@@ -87,7 +69,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             videoBundle.putString(VIDEO_URL, mStep.getVideoURL());
             videoFragment.setArguments(videoBundle);
             fragmentManager.beginTransaction()
-                    .add(R.id.detail_video_frame, videoFragment)
+                    .add(R.id.detail_video_frame, videoFragment, VIDEO_FRAGMENT)
                     .commit();
         }
 

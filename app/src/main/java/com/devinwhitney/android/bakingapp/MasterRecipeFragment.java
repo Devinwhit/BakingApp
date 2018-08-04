@@ -2,6 +2,7 @@ package com.devinwhitney.android.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.devinwhitney.android.bakingapp.model.Ingredients;
 import com.devinwhitney.android.bakingapp.model.Steps;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +42,7 @@ public class MasterRecipeFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mSteps = savedInstanceState.getParcelableArrayList(STEPS);
+            mIngredientList = savedInstanceState.getParcelableArrayList(INGREDIENTS);
         } else {
             mSteps = getArguments().getParcelableArrayList(STEPS);
             mIngredientList = getArguments().getParcelableArrayList(INGREDIENTS);
@@ -71,5 +74,10 @@ public class MasterRecipeFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>) mSteps);
+        outState.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) mIngredientList);
+    }
 }

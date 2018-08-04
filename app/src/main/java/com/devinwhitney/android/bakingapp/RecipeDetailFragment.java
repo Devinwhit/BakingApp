@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.devinwhitney.android.bakingapp.model.Steps;
@@ -46,6 +48,7 @@ public class RecipeDetailFragment extends Fragment {
 
     private Button mNextButton;
     private Button mPreviousButton;
+    private FrameLayout mFrameLayout;
 
 
 
@@ -84,6 +87,7 @@ public class RecipeDetailFragment extends Fragment {
         mStepDescription.setText(mStep.getDescription());
         mNextButton = view.findViewById(R.id.next_step_button);
         mPreviousButton = view.findViewById(R.id.previous_step_button);
+        mFrameLayout = view.findViewById(R.id.detail_video_frame);
         if (fragment.equals(RecipeActivityClassName)){
             mNextButton.setOnClickListener(new View.OnClickListener() {
                 @Override
