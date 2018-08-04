@@ -18,8 +18,8 @@ import java.util.List;
 
 public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.RecipeStepAdapterViewHolder> {
 
-    private List<Steps> mSteps;
-    private RecipeStepAdapterOnClickHandler mClickHandler;
+    private final List<Steps> mSteps;
+    private final RecipeStepAdapterOnClickHandler mClickHandler;
 
     public RecipeStepAdapter(RecipeStepAdapterOnClickHandler click, List<Steps> steps) {
         mSteps = steps;
@@ -53,7 +53,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
     }
 
     public class RecipeStepAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView stepDescription;
+        public final TextView stepDescription;
 
         public RecipeStepAdapterViewHolder(View itemView) {
             super(itemView);

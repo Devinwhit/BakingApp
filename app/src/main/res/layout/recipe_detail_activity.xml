@@ -9,21 +9,12 @@
         android:id="@+id/detail_video_frame"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
-    <!--
-    <android.support.constraint.Guideline
-        android:id="@+id/horizontalHalf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="256dp" />
 
-        -->
     <!-- holds the recipe step detail -->
     <FrameLayout
         android:id="@+id/recipe_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_gravity="top"/>
 
 </LinearLayout>

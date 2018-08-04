@@ -1,7 +1,6 @@
 package com.devinwhitney.android.bakingapp;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -9,22 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.devinwhitney.android.bakingapp.model.Recipe;
 import com.devinwhitney.android.bakingapp.utils.RecipeUtils;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Recipe>>, RecipeCardAdapter.RecipeCardAdapterOnClickHandler {
 
     private LinearLayoutManager layoutManager;
     private RecipeCardAdapter mRecipeCardAdapter;
-    private ProgressBar mProgressBar;
-    private ImageView mRecipeCardImage;
 
     private static final int RECIPE_LOADER_ID = 0;
 
@@ -39,9 +33,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView.setLayoutManager(layoutManager);
         mRecipeCardAdapter = new RecipeCardAdapter(this);
         recyclerView.setAdapter(mRecipeCardAdapter);
-
-        mProgressBar = findViewById(R.id.pb_loading_indicator);
-        mRecipeCardImage = findViewById(R.id.recipeImage);
 
         LoaderManager.LoaderCallbacks<ArrayList<Recipe>> callback = MainActivity.this;
         Bundle bundle = new Bundle();

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -23,16 +22,18 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
     private static final String RECIPE_FRAGMENT = "recipe_fragment";
     private static final String VIDEO_FRAGMENT = "video_fragment";
-    public static String STEPS = "steps_extra";
-    public static String STEP_NUM = "step_number";
-    public static String VIDEO_URL = "video";
-    public static String CURRENT_STEP = "current_step";
-    public static String ALL_STEPS = "all_steps";
+    private static final String RECIPE_NAME = "recipe_name";
+    public static final String STEPS = "steps_extra";
+    public static final String STEP_NUM = "step_number";
+    public static final String VIDEO_URL = "video";
+    public static final String CURRENT_STEP = "current_step";
+    public static final String ALL_STEPS = "all_steps";
 
 
     private List<Steps> mSteps;
     private Steps mStep;
     private int mStepPosition;
+    private String recipeName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,17 +44,17 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             mStep = savedInstanceState.getParcelable(CURRENT_STEP);
             mSteps = savedInstanceState.getParcelableArrayList(ALL_STEPS);
             mStepPosition = savedInstanceState.getInt(STEP_NUM);
+            recipeName = savedInstanceState.getString(RECIPE_NAME);
             int currentOrientation = getResources().getConfiguration().orientation;
             if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                VideoFragment videoFragment = (VideoFragment) fragmentManager.findFragmentByTag(VIDEO_FRAGMENT);
-                System.out.println("video frag");
-                RecipeDetailFragment recipeDetailFragment = (RecipeDetailFragment) fragmentManager.findFragmentByTag(RECIPE_FRAGMENT);
-                VideoFragment newVideoFragment = new VideoFragment();
+                getSupportActionBar().hide();
             }
 
         } else {
             Intent intent = getIntent();
             mSteps = intent.getParcelableArrayListExtra(STEPS);
+            recipeName = intent.getStringExtra(RECIPE_NAME);
+            this.setTitle(recipeName);
             mStepPosition = intent.getIntExtra(STEP_NUM, 0);
             mStep = mSteps.get(mStepPosition);
             Bundle bundle = new Bundle();
@@ -72,6 +73,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                     .add(R.id.detail_video_frame, videoFragment, VIDEO_FRAGMENT)
                     .commit();
         }
+
 
     }
 
@@ -122,6 +124,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         outState.putParcelable(CURRENT_STEP, steps);
         outState.putParcelableArrayList(ALL_STEPS, (ArrayList<? extends Parcelable>) mSteps);
         outState.putInt(STEP_NUM, mStepPosition);
+        outState.putString(RECIPE_NAME, recipeName);
     }
 
     @Override

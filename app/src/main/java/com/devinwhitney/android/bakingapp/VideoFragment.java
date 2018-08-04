@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -34,7 +33,7 @@ import com.google.android.exoplayer2.util.Util;
 public class VideoFragment extends Fragment {
 
     private static final String POSITION = "position_state";
-    private static String TAG = VideoFragment.class.getName();
+    private static final String TAG = VideoFragment.class.getName();
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private MediaSessionCompat mMediaSession;
@@ -51,7 +50,7 @@ public class VideoFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mPosition = Long.valueOf(0);
+        mPosition = 0L;
         if (savedInstanceState != null) {
             videoURL = savedInstanceState.getString(VIDEO_URL);
             mPosition = savedInstanceState.getLong(POSITION, C.TIME_UNSET);
@@ -63,11 +62,18 @@ public class VideoFragment extends Fragment {
             }
 
         }
+
         View view = inflater.inflate(R.layout.just_video, container, false);
         mPlayerView = view.findViewById(R.id.playerView);
         initializeMediaSession();
-        initializePlayer(Uri.parse(videoURL));
-        return view;
+        if (!videoURL.equals("")) {
+            initializePlayer(Uri.parse(videoURL));
+            return view;
+        } else {
+            return null;
+        }
+
+
     }
 
     private void initializeMediaSession() {
@@ -121,16 +127,22 @@ public class VideoFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        long position = mExoPlayer.getCurrentPosition();
-        outState.putLong(POSITION, position);
-        outState.putString(VIDEO_URL, videoURL);
+        if (mExoPlayer != null) {
+            long position = mExoPlayer.getCurrentPosition();
+            outState.putLong(POSITION, position);
+            outState.putString(VIDEO_URL, videoURL);
+        }
+
 
     }
 
     private void releasePlayer() {
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
+        if (mExoPlayer!= null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
+
     }
 
     @Override

@@ -7,4 +7,6 @@
     <string name="recipe_step_instruction">This is the description of the step</string>
     <string name="previous_step">Previous step</string>
     <string name="next_step">Next Step</string>
+    <string name="appwidget_text">Select a recipe in the app, and the ingredients will appear here.</string>
+    <string name="steps_title">Steps</string>
 </resources>

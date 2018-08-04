@@ -28,13 +28,15 @@
             android:layout_width="match_parent"
             android:layout_height="371dp"
             android:layout_gravity="top"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:ignore="InconsistentLayout" />
 
         <FrameLayout
             android:id="@+id/detail_wide_screen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            tools:ignore="InconsistentLayout" />
 
     </LinearLayout>
 

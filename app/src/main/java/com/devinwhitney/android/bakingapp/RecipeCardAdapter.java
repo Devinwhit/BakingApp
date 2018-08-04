@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.devinwhitney.android.bakingapp.model.Recipe;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
@@ -24,7 +22,7 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Re
 
 
     private ArrayList<Recipe> mRecipe = new ArrayList<>();
-    private RecipeCardAdapterOnClickHandler mClickHandler;
+    private final RecipeCardAdapterOnClickHandler mClickHandler;
 
     public RecipeCardAdapter(RecipeCardAdapterOnClickHandler clickHandler) {
         mClickHandler = clickHandler;
@@ -74,9 +72,9 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Re
 
     public class RecipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public TextView mRecipeTitle;
-        public ImageView mRecipeImage;
-        public CardView mCardView;
+        public final TextView mRecipeTitle;
+        public final ImageView mRecipeImage;
+        public final CardView mCardView;
         public RecipeAdapterViewHolder(View view) {
             super (view);
             mRecipeTitle = view.findViewById(R.id.info_text);

@@ -4,10 +4,26 @@
     android:orientation="vertical">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ingredient_title"
+        android:text="@string/recipe_ingredients_text"
+        android:textSize="@dimen/ingredient_title_text"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/recipe_ingredients"
-        android:text="@string/recipe_ingredients_text"/>
+        android:text="@string/recipe_ingredients_text"
+        android:textSize="@dimen/ingredient_size"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/step_title"
+        android:text="@string/steps_title"
+        android:textSize="@dimen/step_title_size"/>
 
     <android.support.v7.widget.RecyclerView
     android:id="@+id/recipe_step_RV"
