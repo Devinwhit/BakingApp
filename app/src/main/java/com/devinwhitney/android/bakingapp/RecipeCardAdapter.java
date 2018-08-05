@@ -47,6 +47,8 @@ public class RecipeCardAdapter extends RecyclerView.Adapter<RecipeCardAdapter.Re
         String image = mRecipe.get(position).getImages();
         if (image.equals("")) {
             Picasso.get().load("https://images.pexels.com/photos/459469/pexels-photo-459469.jpeg?cs=srgb&dl=basil-delicious-food-459469.jpg&fm=jpg").into(holder.mRecipeImage);
+        } else {
+            Picasso.get().load(image).into(holder.mRecipeImage);
         }
 
 

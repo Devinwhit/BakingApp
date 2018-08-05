@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -68,6 +69,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             VideoFragment videoFragment = new VideoFragment();
             Bundle videoBundle = new Bundle();
             videoBundle.putString(VIDEO_URL, mStep.getVideoURL());
+            String videoURL = mStep.getThumbnailURL();
+            videoBundle.putString(VideoFragment.VIDEO_THUMBNAIL_URL, videoURL);
             videoFragment.setArguments(videoBundle);
             fragmentManager.beginTransaction()
                     .add(R.id.detail_video_frame, videoFragment, VIDEO_FRAGMENT)
@@ -92,6 +95,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             VideoFragment videoFragment = new VideoFragment();
             Bundle videoBundle = new Bundle();
             videoBundle.putString(VIDEO_URL, mStep.getVideoURL());
+            videoBundle.putString(VideoFragment.VIDEO_THUMBNAIL_URL, mStep.getThumbnailURL());
             videoFragment.setArguments(videoBundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_video_frame, videoFragment)
@@ -108,6 +112,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             VideoFragment videoFragment = new VideoFragment();
             Bundle videoBundle = new Bundle();
             videoBundle.putString(VIDEO_URL, mStep.getVideoURL());
+            videoBundle.putString(VideoFragment.VIDEO_THUMBNAIL_URL, mStep.getThumbnailURL());
             videoFragment.setArguments(videoBundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.detail_video_frame, videoFragment)

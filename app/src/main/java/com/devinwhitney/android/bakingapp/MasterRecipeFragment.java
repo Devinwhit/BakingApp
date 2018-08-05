@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.devinwhitney.android.bakingapp.model.Ingredients;
@@ -48,7 +49,11 @@ public class MasterRecipeFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.view_recipes, container, false);
 
-
+        view.findViewById(R.id.ingredient_step_scroll_view).post(new Runnable() {
+            public void run() {
+                ((ScrollView) view.findViewById(R.id.ingredient_step_scroll_view)).fullScroll(View.FOCUS_UP);
+            }
+        });
         RecyclerView recyclerView = view.findViewById(R.id.recipe_step_RV);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         RecipeStepAdapter recipeStepAdapter = new RecipeStepAdapter((RecipeStepAdapter.RecipeStepAdapterOnClickHandler) getContext(), mSteps);

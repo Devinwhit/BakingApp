@@ -39,6 +39,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepAdapt
     private int mStepPosition;
     private boolean mTwoPane;
     private List<Ingredients> ingredients;
+    private String videoURL;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +81,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeStepAdapt
 
                 Bundle videoBundle = new Bundle();
                 videoBundle.putString(VIDEO_URL, mSteps.get(0).getVideoURL());
+                videoURL = mSteps.get(0).getThumbnailURL();
+                videoBundle.putString(VideoFragment.VIDEO_THUMBNAIL_URL, videoURL);
                 VideoFragment videoFragment = new VideoFragment();
                 videoFragment.setArguments(videoBundle);
 
